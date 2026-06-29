@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Inscripción · Actividad Anual Jóvenes</title>
+<meta name="description" content="Inscríbete a la Actividad Anual de Hombres y Mujeres Jóvenes — 14 de julio 2026, Quintas Los Cedros, Jiménez de Pococí." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Luckiest+Guy&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     CONFIG VISUAL — paleta tomada del flyer
+     ============================================================ */
+  :root{
+    --cyan:#25C2DE;
+    --cyan-deep:#10A9C6;
+    --orange:#F47C20;
+    --orange-deep:#E2670C;
+    --cream:#FBF4E4;
+    --cream-card:#FFFDF6;
+    --yellow:#FCC22D;
+    --ink:#123F58;        /* azul oscuro del logo / tipografía */
+    --ink-soft:#3C6079;
+    --green:#3E6B47;
+    --line:#E7DFC8;
+    --error:#D64545;
+    --ok:#2F9E63;
+    --shadow:0 10px 30px rgba(18,63,88,.12);
+    --shadow-sm:0 4px 14px rgba(18,63,88,.10);
+    --radius:18px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Fredoka',system-ui,sans-serif;
+    color:var(--ink);
+    background:var(--cream);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+
+  /* ---------- barra superior pegajosa con cuenta regresiva ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:var(--ink);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;gap:.5rem;
+    padding:.55rem 1rem;
+    font-weight:600;font-size:.92rem;
+    text-align:center;
+    box-shadow:0 2px 10px rgba(0,0,0,.18);
+  }
+  .topbar b{color:var(--yellow);}
+  .topbar.closed{background:var(--error);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    background:
+      radial-gradient(120% 80% at 50% -10%, var(--cyan) 0%, var(--cyan-deep) 70%);
+    color:#fff;
+    padding:2.4rem 1.2rem 3.4rem;
+    text-align:center;
+    overflow:hidden;
+  }
+  .hero .mtn{
+    margin:0 auto 1rem;
+    width:96px;height:96px;
+    filter:drop-shadow(0 6px 10px rgba(0,0,0,.18));
+  }
+  .eyebrow{
+    font-family:'Luckiest Guy',cursive;
+    letter-spacing:.04em;
+    font-size:clamp(1.5rem,6.5vw,2.4rem);
+    color:var(--cream);
+    text-shadow:2px 3px 0 rgba(18,63,88,.25);
+    margin:0;line-height:1;
+  }
+  .title{
+    font-family:'Luckiest Guy',cursive;
+    letter-spacing:.03em;
+    font-size:clamp(2rem,9vw,3.4rem);
+    color:var(--orange);
+    -webkit-text-stroke:2px #fff;
+    text-shadow:3px 4px 0 var(--ink);
+    margin:.1rem 0 0;line-height:1.02;
+  }
+  .hero-sub{
+    margin:1rem auto 0;max-width:30rem;
+    font-size:1rem;color:rgba(255,255,255,.95);font-weight:500;
+  }
+  /* curva inferior del hero */
+  .hero::after{
+    content:"";position:absolute;left:0;right:0;bottom:-1px;height:42px;
+    background:var(--cream);
+    border-radius:50% 50% 0 0 / 100% 100% 0 0;
+  }
+
+  /* ---------- tarjeta de info de la actividad ---------- */
+  .wrap{max-width:640px;margin:0 auto;padding:0 1rem 3rem;}
+  .info-card{
+    margin-top:-1.4rem;position:relative;z-index:2;
+    background:var(--cream-card);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    border:1px solid var(--line);
+    padding:1.1rem 1.1rem 1.2rem;
+    display:grid;grid-template-columns:1fr 1fr;gap:.7rem;
+  }
+  .info-card .full{grid-column:1 / -1;}
+  .info-item{display:flex;gap:.65rem;align-items:flex-start;}
+  .info-item .ico{
+    flex:0 0 auto;width:38px;height:38px;border-radius:11px;
+    display:grid;place-items:center;color:#fff;font-size:1.1rem;
+  }
+  .ico.date{background:var(--orange);}
+  .ico.place{background:var(--green);}
+  .ico.who{background:var(--cyan-deep);}
+  .info-item .k{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);font-weight:600;}
+  .info-item .v{font-weight:600;font-size:.98rem;}
+
+  /* ---------- secciones del formulario (estilo "señal de campamento") ---------- */
+  form{margin-top:1.6rem;}
+  .section{
+    background:var(--cream-card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-sm);
+    padding:1.1rem 1.1rem 1.25rem;
+    margin-bottom:1.1rem;
+  }
+  .sec-head{
+    display:flex;align-items:center;gap:.7rem;margin:-.2rem 0 1rem;
+  }
+  .sec-badge{
+    flex:0 0 auto;width:40px;height:40px;border-radius:12px;
+    background:var(--cyan);color:#fff;font-family:'Luckiest Guy',cursive;
+    display:grid;place-items:center;font-size:1.15rem;
+    box-shadow:0 4px 0 var(--cyan-deep);
+  }
+  .section:nth-of-type(2) .sec-badge{background:var(--orange);box-shadow:0 4px 0 var(--orange-deep);}
+  .section:nth-of-type(3) .sec-badge{background:var(--green);box-shadow:0 4px 0 #2c5034;}
+  .section:nth-of-type(4) .sec-badge{background:var(--cyan-deep);box-shadow:0 4px 0 #0b8197;}
+  .section:nth-of-type(5) .sec-badge{background:var(--yellow);color:var(--ink);box-shadow:0 4px 0 #d99f12;}
+  .sec-head h2{font-size:1.15rem;margin:0;font-weight:700;}
+  .sec-head p{margin:.1rem 0 0;font-size:.82rem;color:var(--ink-soft);font-weight:500;}
+
+  /* ---------- campos ---------- */
+  .field{margin-bottom:.95rem;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}
+  @media (max-width:480px){.grid-2{grid-template-columns:1fr;}}
+  label{display:block;font-weight:600;font-size:.92rem;margin-bottom:.35rem;}
+  label .req{color:var(--orange);}
+  .hint{font-weight:500;font-size:.78rem;color:var(--ink-soft);margin:-.15rem 0 .4rem;}
+  input,select,textarea{
+    width:100%;font-family:inherit;font-size:1rem;color:var(--ink);
+    background:#fff;border:2px solid var(--line);border-radius:13px;
+    padding:.78rem .85rem;transition:border-color .15s, box-shadow .15s;
+  }
+  textarea{min-height:74px;resize:vertical;}
+  input:focus,select:focus,textarea:focus{
+    outline:none;border-color:var(--cyan);
+    box-shadow:0 0 0 4px rgba(37,194,222,.18);
+  }
+  input.invalid,select.invalid,textarea.invalid{border-color:var(--error);box-shadow:0 0 0 4px rgba(214,69,69,.12);}
+  .err-msg{color:var(--error);font-size:.8rem;font-weight:600;margin-top:.3rem;display:none;}
+  .err-msg.show{display:block;}
+
+  /* edad calculada */
+  .age-pill{
+    display:none;margin-top:.5rem;font-weight:600;font-size:.9rem;
+    padding:.5rem .75rem;border-radius:11px;
+  }
+  .age-pill.show{display:inline-block;}
+  .age-pill.ok{background:#E7F6EC;color:var(--ok);}
+  .age-pill.warn{background:#FDECEC;color:var(--error);}
+
+  /* opciones tipo botón (sexo / programa) */
+  .choice{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;}
+  .choice input{position:absolute;opacity:0;pointer-events:none;}
+  .choice label{
+    margin:0;cursor:pointer;text-align:center;font-weight:600;
+    border:2px solid var(--line);border-radius:13px;padding:.85rem .5rem;
+    background:#fff;transition:.15s;
+  }
+  .choice label:hover{border-color:var(--cyan);}
+  .choice input:checked + label{
+    border-color:var(--cyan);background:rgba(37,194,222,.12);color:var(--ink);
+    box-shadow:0 0 0 3px rgba(37,194,222,.18);
+  }
+  .choice label .emoji{display:block;font-size:1.4rem;margin-bottom:.15rem;}
+
+  /* checkboxes de autorización */
+  .check{
+    display:flex;gap:.7rem;align-items:flex-start;
+    background:#fff;border:2px solid var(--line);border-radius:13px;
+    padding:.85rem;margin-bottom:.8rem;cursor:pointer;transition:.15s;
+  }
+  .check:hover{border-color:var(--yellow);}
+  .check input{width:22px;height:22px;flex:0 0 auto;margin-top:.1rem;accent-color:var(--green);}
+  .check span{font-weight:500;font-size:.92rem;}
+  .check.required-box{border-color:var(--yellow);background:#FFFBEC;}
+
+  /* botón enviar */
+  .submit-btn{
+    width:100%;border:none;cursor:pointer;
+    font-family:'Luckiest Guy',cursive;letter-spacing:.04em;
+    font-size:1.25rem;color:#fff;
+    background:var(--orange);
+    border-radius:16px;padding:1.05rem;
+    box-shadow:0 6px 0 var(--orange-deep);
+    transition:transform .08s, box-shadow .08s, background .15s;
+  }
+  .submit-btn:hover{background:var(--orange-deep);}
+  .submit-btn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--orange-deep);}
+  .submit-btn:disabled{background:#bbb;box-shadow:0 6px 0 #999;cursor:not-allowed;}
+
+  .form-note{text-align:center;font-size:.82rem;color:var(--ink-soft);margin:.9rem 0 0;}
+
+  /* footer */
+  footer{text-align:center;padding:1.5rem 1rem 2.5rem;color:var(--ink-soft);font-size:.82rem;}
+
+  /* ---------- pantalla de éxito ---------- */
+  .success{
+    display:none;text-align:center;
+    background:var(--cream-card);border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:2.4rem 1.4rem;margin-top:1.6rem;
+  }
+  .success.show{display:block;animation:pop .4s ease;}
+  @keyframes pop{from{transform:scale(.94);opacity:0;}to{transform:scale(1);opacity:1;}}
+  .success .big{
+    width:88px;height:88px;margin:0 auto 1rem;border-radius:50%;
+    background:var(--green);color:#fff;display:grid;place-items:center;font-size:2.6rem;
+    box-shadow:0 8px 0 #2c5034;
+  }
+  .success h2{font-family:'Luckiest Guy',cursive;color:var(--orange);font-size:1.8rem;margin:.2rem 0 .4rem;}
+  .success p{color:var(--ink-soft);font-weight:500;max-width:24rem;margin:.4rem auto;}
+  .recap{
+    text-align:left;background:#fff;border:1px solid var(--line);border-radius:13px;
+    padding:1rem;margin:1.2rem auto 0;max-width:24rem;font-size:.92rem;
+  }
+  .recap div{display:flex;justify-content:space-between;gap:1rem;padding:.25rem 0;border-bottom:1px dashed var(--line);}
+  .recap div:last-child{border-bottom:none;}
+  .recap b{color:var(--ink);}
+  .wa-btn{
+    display:inline-flex;align-items:center;gap:.5rem;margin-top:1.3rem;
+    background:#25D366;color:#fff;text-decoration:none;font-weight:700;
+    padding:.85rem 1.4rem;border-radius:14px;box-shadow:0 5px 0 #1da851;
+  }
+  .wa-btn:active{transform:translateY(3px);box-shadow:0 2px 0 #1da851;}
+
+  /* mensaje de error global */
+  .form-error{
+    display:none;background:#FDECEC;color:var(--error);border:2px solid #f3c0c0;
+    border-radius:13px;padding:.85rem 1rem;font-weight:600;font-size:.9rem;margin-bottom:1rem;
+  }
+  .form-error.show{display:block;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ CONFIGURACIÓN — EDITÁ ESTO ============ -->
+<script>
+  const CONFIG = {
+    // 1) URL del Web App de Google Apps Script (ver instrucciones). Si lo dejás vacío,
+    //    la inscripción se envía por WhatsApp automáticamente.
+    GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbxnvHAYz5jrEi6xr9iIKWzF8xjfrK2E91fKQg_mMXrU5PuOdYc9b01BCUpmiNFKlTB81g/exec",
+
+    // 2) Número de WhatsApp del líder/encargado (formato internacional, solo números).
+    //    Ejemplo Costa Rica: "50688887777"
+    WHATSAPP_NUMBER: "50600000000",
+
+    // 3) Fechas (no las cambies salvo que se reprograme la actividad)
+    DEADLINE: "2026-07-05T23:59:59-06:00",   // cierre de inscripciones
+    ACTIVITY_DATE: "2026-07-14",             // día de la actividad
+    MIN_AGE: 11,
+    MAX_AGE: 17
+  };
+</script>
+
+<!-- barra cuenta regresiva -->
+<div class="topbar" id="topbar">
+  <span id="countdown">⏳ Inscripciones abiertas…</span>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <svg class="mtn" viewBox="0 0 100 100" aria-hidden="true">
+    <circle cx="68" cy="30" r="15" fill="var(--yellow)"/>
+    <path d="M8 82 L40 30 L60 60 L72 44 L92 82 Z" fill="#0E5C73"/>
+    <path d="M8 82 L34 44 L52 70 L66 54 L80 70 L92 82 Z" fill="#5FB7B0" opacity=".85"/>
+  </svg>
+  <p class="eyebrow">Actividad Anual</p>
+  <h1 class="title">Hombres y Mujeres Jóvenes</h1>
+  <p class="hero-sub">Iglesia de Jesucristo de los Santos de los Últimos Días · Completá tu inscripción aquí 👇</p>
+</header>
+
+<div class="wrap">
+
+  <!-- INFO DE LA ACTIVIDAD -->
+  <section class="info-card" aria-label="Información de la actividad">
+    <div class="info-item">
+      <div class="ico date">📅</div>
+      <div><div class="k">Fecha</div><div class="v">Martes 14 de julio, 2026</div></div>
+    </div>
+    <div class="info-item">
+      <div class="ico who">👟</div>
+      <div><div class="k">Para</div><div class="v">Jóvenes de 11 a 17 años</div></div>
+    </div>
+    <div class="info-item full">
+      <div class="ico place">📍</div>
+      <div><div class="k">Lugar</div><div class="v">Quintas Los Cedros, Jiménez de Pococí</div></div>
+    </div>
+  </section>
+
+  <!-- error global -->
+  <div class="form-error" id="formError"></div>
+
+  <!-- FORMULARIO -->
+  <form id="regForm" novalidate>
+
+    <!-- 1. PARTICIPANTE -->
+    <div class="section">
+      <div class="sec-head">
+        <div class="sec-badge">1</div>
+        <div><h2>¿Quién se inscribe?</h2><p>Datos del joven que va a participar</p></div>
+      </div>
+
+      <div class="field">
+        <label for="nombre">Nombre completo <span class="req">*</span></label>
+        <input type="text" id="nombre" name="nombre" autocomplete="name" placeholder="Ej: María Fernanda Rojas Mora" required>
+        <div class="err-msg">Escribí el nombre y apellidos.</div>
+      </div>
+
+      <div class="field">
+        <label for="nacimiento">Fecha de nacimiento <span class="req">*</span></label>
+        <input type="date" id="nacimiento" name="nacimiento" max="2020-12-31" min="2005-01-01" required>
+        <div class="age-pill" id="agePill"></div>
+        <div class="err-msg">Seleccioná tu fecha de nacimiento.</div>
+      </div>
+
+      <div class="field">
+        <label>Programa <span class="req">*</span></label>
+        <div class="choice">
+          <input type="radio" id="sexoH" name="programa" value="Hombres Jóvenes" required>
+          <label for="sexoH"><span class="emoji">⚽</span>Hombres Jóvenes</label>
+          <input type="radio" id="sexoM" name="programa" value="Mujeres Jóvenes">
+          <label for="sexoM"><span class="emoji">🎒</span>Mujeres Jóvenes</label>
+        </div>
+        <div class="err-msg">Elegí una opción.</div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="barrio">Barrio o Rama <span class="req">*</span></label>
+          <input type="text" id="barrio" name="barrio" placeholder="Ej: Barrio Guápiles" required>
+          <div class="err-msg">Indicá tu barrio o rama.</div>
+        </div>
+        <div class="field">
+          <label for="estaca">Estaca o Distrito <span class="req">*</span></label>
+          <input type="text" id="estaca" name="estaca" placeholder="Ej: Estaca Guápiles" required>
+          <div class="err-msg">Indicá tu estaca o distrito.</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="talla">Talla de camiseta</label>
+        <div class="hint">Por si se entregan camisetas en la actividad.</div>
+        <select id="talla" name="talla">
+          <option value="">Seleccioná una talla (opcional)</option>
+          <option>XS</option><option>S</option><option>M</option>
+          <option>L</option><option>XL</option><option>XXL</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 2. PADRE / MADRE / ENCARGADO -->
+    <div class="section">
+      <div class="sec-head">
+        <div class="sec-badge">2</div>
+        <div><h2>Papá, mamá o encargado</h2><p>Para coordinar y avisar cualquier cosa</p></div>
+      </div>
+
+      <div class="field">
+        <label for="encargado">Nombre del padre, madre o encargado <span class="req">*</span></label>
+        <input type="text" id="encargado" name="encargado" placeholder="Nombre completo" required>
+        <div class="err-msg">Escribí el nombre del encargado.</div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="telEncargado">Teléfono (WhatsApp) <span class="req">*</span></label>
+          <input type="tel" id="telEncargado" name="telEncargado" inputmode="tel" placeholder="8888-7777" required>
+          <div class="err-msg">Ingresá un teléfono de contacto.</div>
+        </div>
+        <div class="field">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo" autocomplete="email" placeholder="Opcional">
+          <div class="err-msg">Revisá el correo.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. EMERGENCIA -->
+    <div class="section">
+      <div class="sec-head">
+        <div class="sec-badge">3</div>
+        <div><h2>Contacto de emergencia</h2><p>Alguien a quien llamar si hace falta</p></div>
+      </div>
+
+      <div class="field">
+        <label for="emergNombre">Nombre del contacto <span class="req">*</span></label>
+        <input type="text" id="emergNombre" name="emergNombre" placeholder="Nombre completo" required>
+        <div class="err-msg">Escribí el nombre del contacto.</div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="emergTel">Teléfono <span class="req">*</span></label>
+          <input type="tel" id="emergTel" name="emergTel" inputmode="tel" placeholder="8888-7777" required>
+          <div class="err-msg">Ingresá el teléfono.</div>
+        </div>
+        <div class="field">
+          <label for="emergParentesco">Parentesco <span class="req">*</span></label>
+          <input type="text" id="emergParentesco" name="emergParentesco" placeholder="Ej: Mamá, Tío, Líder" required>
+          <div class="err-msg">Indicá el parentesco.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. SALUD -->
+    <div class="section">
+      <div class="sec-head">
+        <div class="sec-badge">4</div>
+        <div><h2>Información de salud</h2><p>Para cuidarte bien. Si no aplica, escribí "Ninguna".</p></div>
+      </div>
+
+      <div class="field">
+        <label for="alergias">Alergias <span class="req">*</span></label>
+        <input type="text" id="alergias" name="alergias" placeholder="Ej: penicilina, maní… o 'Ninguna'" required>
+        <div class="err-msg">Escribí las alergias o "Ninguna".</div>
+      </div>
+
+      <div class="field">
+        <label for="condiciones">Condiciones médicas</label>
+        <div class="hint">Asma, diabetes, epilepsia, etc.</div>
+        <textarea id="condiciones" name="condiciones" placeholder="Opcional"></textarea>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="medicamentos">Medicamentos que toma</label>
+          <input type="text" id="medicamentos" name="medicamentos" placeholder="Opcional">
+        </div>
+        <div class="field">
+          <label for="dieta">Restricciones alimentarias</label>
+          <input type="text" id="dieta" name="dieta" placeholder="Opcional">
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. AUTORIZACIÓN -->
+    <div class="section">
+      <div class="sec-head">
+        <div class="sec-badge">5</div>
+        <div><h2>Autorización del encargado</h2><p>Requerida porque la persona es menor de edad</p></div>
+      </div>
+
+      <label class="check required-box" for="autorizo">
+        <input type="checkbox" id="autorizo" name="autorizo" required>
+        <span>Autorizo a mi hijo(a) a participar en la Actividad Anual de Jóvenes el 14 de julio de 2026 en Quintas Los Cedros, Jiménez de Pococí, bajo la supervisión de los líderes. <span class="req">*</span></span>
+      </label>
+      <div class="err-msg" id="autErr">Necesitás marcar esta autorización para inscribir.</div>
+
+      <div class="field" style="margin-bottom:.8rem;">
+        <label>¿Autoriza el uso de fotografías o videos de la actividad para fines de la Iglesia? <span class="req">*</span></label>
+        <div class="choice">
+          <input type="radio" id="fotosSi" name="fotos" value="Sí" required>
+          <label for="fotosSi"><span class="emoji">📸</span>Sí, autorizo</label>
+          <input type="radio" id="fotosNo" name="fotos" value="No">
+          <label for="fotosNo"><span class="emoji">🚫</span>No autorizo</label>
+        </div>
+        <div class="err-msg" id="fotosErr">Elegí una opción.</div>
+      </div>
+
+      <div class="field" style="margin-top:.4rem;">
+        <label for="firma">Firma digital — nombre del encargado que autoriza <span class="req">*</span></label>
+        <div class="hint">Escribir tu nombre aquí equivale a tu firma.</div>
+        <input type="text" id="firma" name="firma" placeholder="Tu nombre completo" required>
+        <div class="err-msg">Escribí tu nombre para firmar.</div>
+      </div>
+
+      <div class="field">
+        <label for="comentarios">Comentarios adicionales</label>
+        <textarea id="comentarios" name="comentarios" placeholder="¿Algo más que debamos saber? (opcional)"></textarea>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn">Inscribirme ✏️</button>
+    <p class="form-note">Al inscribirte, los datos se envían a los líderes de la actividad.</p>
+  </form>
+
+  <!-- PANTALLA DE ÉXITO -->
+  <div class="success" id="success">
+    <div class="big">✓</div>
+    <h2>¡Listo, ya quedaste!</h2>
+    <p>Tu inscripción se envió correctamente. ¡Nos vemos el <b>14 de julio</b> en Quintas Los Cedros! 🎉</p>
+    <div class="recap" id="recap"></div>
+    <a href="#" class="wa-btn" id="waConfirm" target="_blank" rel="noopener">
+      📲 Confirmar también por WhatsApp
+    </a>
+    <p class="form-note" style="margin-top:1.2rem;">Tomá un pantallazo de esta pantalla como respaldo.</p>
+  </div>
+
+  <footer>
+    Hombres y Mujeres Jóvenes · Actividad Anual 2026<br>
+    Iglesia de Jesucristo de los Santos de los Últimos Días
+  </footer>
+</div>
+
+<script>
+/* ============================================================
+   LÓGICA
+   ============================================================ */
+const form = document.getElementById('regForm');
+const submitBtn = document.getElementById('submitBtn');
+const successEl = document.getElementById('success');
+const formError = document.getElementById('formError');
+const nacimiento = document.getElementById('nacimiento');
+const agePill = document.getElementById('agePill');
+
+/* ---------- cuenta regresiva ---------- */
+const deadline = new Date(CONFIG.DEADLINE).getTime();
+const topbar = document.getElementById('topbar');
+const cd = document.getElementById('countdown');
+let isOpen = true;
+
+function tick(){
+  const now = Date.now();
+  const diff = deadline - now;
+  if(diff <= 0){
+    isOpen = false;
+    topbar.classList.add('closed');
+    cd.textContent = '⛔ Las inscripciones cerraron el 5 de julio';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Inscripciones cerradas';
+    return;
+  }
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor(diff%86400000/3600000);
+  const m = Math.floor(diff%3600000/60000);
+  cd.innerHTML = `⏳ Cierra el <b>5 de julio</b> · faltan <b>${d}d ${h}h ${m}m</b>`;
+}
+tick(); setInterval(tick, 30000);
+
+/* ---------- cálculo de edad ---------- */
+function calcAge(birthStr){
+  if(!birthStr) return null;
+  const b = new Date(birthStr + 'T00:00:00');
+  const ref = new Date(CONFIG.ACTIVITY_DATE + 'T00:00:00');
+  let age = ref.getFullYear() - b.getFullYear();
+  const m = ref.getMonth() - b.getMonth();
+  if(m < 0 || (m === 0 && ref.getDate() < b.getDate())) age--;
+  return age;
+}
+nacimiento.addEventListener('change', () => {
+  const age = calcAge(nacimiento.value);
+  if(age === null || isNaN(age)){ agePill.className='age-pill'; return; }
+  agePill.classList.add('show');
+  if(age >= CONFIG.MIN_AGE && age <= CONFIG.MAX_AGE){
+    agePill.className = 'age-pill show ok';
+    agePill.textContent = `✓ Tendrás ${age} años en la actividad`;
+  } else {
+    agePill.className = 'age-pill show warn';
+    agePill.textContent = `⚠️ Esta actividad es para edades ${CONFIG.MIN_AGE}–${CONFIG.MAX_AGE} (tendrías ${age}). Consultá con tu líder.`;
+  }
+});
+
+/* ---------- validación ---------- */
+function showFieldError(el, on){
+  el.classList.toggle('invalid', on);
+  const msg = el.closest('.field')?.querySelector('.err-msg');
+  if(msg) msg.classList.toggle('show', on);
+}
+function validate(){
+  let ok = true; let firstBad = null;
+  formError.classList.remove('show');
+
+  // requeridos de texto/select/date
+  form.querySelectorAll('input[required], select[required], textarea[required]').forEach(el => {
+    if(el.type === 'radio' || el.type === 'checkbox') return;
+    const bad = !el.value.trim() || (el.type==='email' && el.value && !el.checkValidity());
+    showFieldError(el, bad);
+    if(bad && !firstBad){ firstBad = el; ok = false; } else if(bad){ ok = false; }
+  });
+
+  // programa (radio)
+  const prog = form.querySelector('input[name="programa"]:checked');
+  const progBox = document.getElementById('sexoH').closest('.field');
+  const progErr = progBox.querySelector('.err-msg');
+  if(!prog){ progErr.classList.add('show'); ok = false; if(!firstBad) firstBad = progBox; }
+  else progErr.classList.remove('show');
+
+  // autorización
+  const aut = document.getElementById('autorizo');
+  const autErr = document.getElementById('autErr');
+  if(!aut.checked){ autErr.classList.add('show'); ok = false; if(!firstBad) firstBad = aut; }
+  else autErr.classList.remove('show');
+
+  // autorización de fotos (Sí/No obligatorio)
+  const fotos = form.querySelector('input[name="fotos"]:checked');
+  const fotosBox = document.getElementById('fotosSi').closest('.field');
+  const fotosErr = document.getElementById('fotosErr');
+  if(!fotos){ fotosErr.classList.add('show'); ok = false; if(!firstBad) firstBad = fotosBox; }
+  else fotosErr.classList.remove('show');
+
+  if(firstBad) firstBad.scrollIntoView({behavior:'smooth', block:'center'});
+  return ok;
+}
+// limpiar error al escribir
+form.addEventListener('input', e => { if(e.target.classList.contains('invalid')) showFieldError(e.target, false); });
+
+/* ---------- recolectar datos ---------- */
+function collect(){
+  const g = id => (document.getElementById(id)?.value || '').trim();
+  const age = calcAge(nacimiento.value);
+  return {
+    fecha_envio: new Date().toLocaleString('es-CR'),
+    nombre: g('nombre'),
+    nacimiento: g('nacimiento'),
+    edad: age ?? '',
+    programa: form.querySelector('input[name="programa"]:checked')?.value || '',
+    barrio: g('barrio'),
+    estaca: g('estaca'),
+    talla: g('talla'),
+    encargado: g('encargado'),
+    telEncargado: g('telEncargado'),
+    correo: g('correo'),
+    emergNombre: g('emergNombre'),
+    emergTel: g('emergTel'),
+    emergParentesco: g('emergParentesco'),
+    alergias: g('alergias'),
+    condiciones: g('condiciones'),
+    medicamentos: g('medicamentos'),
+    dieta: g('dieta'),
+    autoriza_participacion: document.getElementById('autorizo').checked ? 'Sí' : 'No',
+    autoriza_fotos: form.querySelector('input[name="fotos"]:checked')?.value || '',
+    firma: g('firma'),
+    comentarios: g('comentarios')
+  };
+}
+
+/* ---------- mensaje de WhatsApp ---------- */
+function buildWhatsApp(d){
+  const txt =
+`*INSCRIPCIÓN — Actividad Anual Jóvenes 2026*
+14 de julio · Quintas Los Cedros
+
+👤 *${d.nombre}* (${d.programa})
+🎂 Nace: ${d.nacimiento} (${d.edad} años)
+⛪ Barrio/Rama: ${d.barrio}${d.estaca ? ' · '+d.estaca : ''}
+👕 Talla: ${d.talla || '—'}
+
+👨‍👩‍👧 Encargado: ${d.encargado}
+📞 Tel: ${d.telEncargado}${d.correo ? '\n✉️ '+d.correo : ''}
+
+🆘 Emergencia: ${d.emergNombre} (${d.emergParentesco}) — ${d.emergTel}
+
+🩺 Alergias: ${d.alergias}${d.condiciones ? '\n• Condiciones: '+d.condiciones : ''}${d.medicamentos ? '\n• Medicamentos: '+d.medicamentos : ''}${d.dieta ? '\n• Dieta: '+d.dieta : ''}
+
+✍️ Autoriza: ${d.autoriza_participacion} · Fotos: ${d.autoriza_fotos}
+Firma: ${d.firma}${d.comentarios ? '\n📝 '+d.comentarios : ''}`;
+  return `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(txt)}`;
+}
+
+/* ---------- mostrar éxito ---------- */
+function showSuccess(d){
+  document.getElementById('recap').innerHTML = `
+    <div><span>Participante</span><b>${d.nombre}</b></div>
+    <div><span>Programa</span><b>${d.programa}</b></div>
+    <div><span>Edad</span><b>${d.edad} años</b></div>
+    <div><span>Barrio/Rama</span><b>${d.barrio}</b></div>`;
+  document.getElementById('waConfirm').href = buildWhatsApp(d);
+  form.style.display = 'none';
+  successEl.classList.add('show');
+  successEl.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/* ---------- envío ---------- */
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  if(!isOpen) return;
+  if(!validate()){
+    formError.textContent = 'Revisá los campos marcados en rojo arriba 👆';
+    formError.classList.add('show');
+    return;
+  }
+
+  const data = collect();
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Enviando…';
+
+  // Sin backend configurado → directo a WhatsApp
+  if(!CONFIG.GOOGLE_SCRIPT_URL){
+    window.location.href = buildWhatsApp(data);
+    setTimeout(() => showSuccess(data), 600);
+    return;
+  }
+
+  // Con Google Sheets
+  try {
+    await fetch(CONFIG.GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'text/plain;charset=utf-8'}, // evita preflight CORS
+      body: JSON.stringify(data)
+    });
+    showSuccess(data);
+  } catch(err){
+    // Si algo falla, no perdemos la inscripción: la mandamos por WhatsApp
+    formError.textContent = 'No se pudo guardar en el servidor. Te abrimos WhatsApp para enviarla.';
+    formError.classList.add('show');
+    window.location.href = buildWhatsApp(data);
+    setTimeout(() => showSuccess(data), 800);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Inscribirme ✏️';
+  }
+});
+</script>
+</body>
+</html>
