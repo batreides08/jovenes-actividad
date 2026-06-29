@@ -277,13 +277,14 @@
 
     // 2) Número de WhatsApp del líder/encargado (formato internacional, solo números).
     //    Ejemplo Costa Rica: "50688887777"
-    WHATSAPP_NUMBER: "50663294908",
+    WHATSAPP_NUMBER: "50600000000",
 
     // 3) Fechas (no las cambies salvo que se reprograme la actividad)
-    DEADLINE: "2026-07-05T23:59:59-06:00",   // cierre de inscripciones
+    DEADLINE: "2026-07-07T23:59:59-06:00",   // cierre de inscripciones
     ACTIVITY_DATE: "2026-07-14",             // día de la actividad
-    MIN_AGE: 11,
-    MAX_AGE: 17
+    ELIGIBILITY_YEAR: 2026,                  // año de referencia para la edad
+    MIN_AGE: 12,                             // cumple 12 años durante el año
+    MAX_AGE: 17                              // hasta 17 años
   };
 </script>
 
@@ -314,7 +315,7 @@
     </div>
     <div class="info-item">
       <div class="ico who">👟</div>
-      <div><div class="k">Para</div><div class="v">Jóvenes de 11 a 17 años</div></div>
+      <div><div class="k">Para</div><div class="v">Jóvenes de 12 a 17 años</div></div>
     </div>
     <div class="info-item full">
       <div class="ico place">📍</div>
@@ -343,7 +344,7 @@
 
       <div class="field">
         <label for="nacimiento">Fecha de nacimiento <span class="req">*</span></label>
-        <input type="date" id="nacimiento" name="nacimiento" max="2020-12-31" min="2005-01-01" required>
+        <input type="date" id="nacimiento" name="nacimiento" max="2014-12-31" min="2009-01-01" required>
         <div class="age-pill" id="agePill"></div>
         <div class="err-msg">Seleccioná tu fecha de nacimiento.</div>
       </div>
@@ -370,16 +371,6 @@
           <input type="text" id="estaca" name="estaca" placeholder="Ej: Estaca Guápiles" required>
           <div class="err-msg">Indicá tu estaca o distrito.</div>
         </div>
-      </div>
-
-      <div class="field">
-        <label for="talla">Talla de camiseta</label>
-        <div class="hint">Por si se entregan camisetas en la actividad.</div>
-        <select id="talla" name="talla">
-          <option value="">Seleccioná una talla (opcional)</option>
-          <option>XS</option><option>S</option><option>M</option>
-          <option>L</option><option>XL</option><option>XXL</option>
-        </select>
       </div>
     </div>
 
@@ -550,7 +541,7 @@ function tick(){
   if(diff <= 0){
     isOpen = false;
     topbar.classList.add('closed');
-    cd.textContent = '⛔ Las inscripciones cerraron el 5 de julio';
+    cd.textContent = '⛔ Las inscripciones cerraron el 7 de julio';
     submitBtn.disabled = true;
     submitBtn.textContent = 'Inscripciones cerradas';
     return;
@@ -558,19 +549,16 @@ function tick(){
   const d = Math.floor(diff/86400000);
   const h = Math.floor(diff%86400000/3600000);
   const m = Math.floor(diff%3600000/60000);
-  cd.innerHTML = `⏳ Cierra el <b>5 de julio</b> · faltan <b>${d}d ${h}h ${m}m</b>`;
+  cd.innerHTML = `⏳ Cierra el <b>7 de julio</b> · faltan <b>${d}d ${h}h ${m}m</b>`;
 }
 tick(); setInterval(tick, 30000);
 
-/* ---------- cálculo de edad ---------- */
+/* ---------- edad que cumple durante el año ---------- */
 function calcAge(birthStr){
   if(!birthStr) return null;
-  const b = new Date(birthStr + 'T00:00:00');
-  const ref = new Date(CONFIG.ACTIVITY_DATE + 'T00:00:00');
-  let age = ref.getFullYear() - b.getFullYear();
-  const m = ref.getMonth() - b.getMonth();
-  if(m < 0 || (m === 0 && ref.getDate() < b.getDate())) age--;
-  return age;
+  const y = new Date(birthStr + 'T00:00:00').getFullYear();
+  if(isNaN(y)) return null;
+  return CONFIG.ELIGIBILITY_YEAR - y;   // años que cumple en 2026
 }
 nacimiento.addEventListener('change', () => {
   const age = calcAge(nacimiento.value);
@@ -578,10 +566,10 @@ nacimiento.addEventListener('change', () => {
   agePill.classList.add('show');
   if(age >= CONFIG.MIN_AGE && age <= CONFIG.MAX_AGE){
     agePill.className = 'age-pill show ok';
-    agePill.textContent = `✓ Tendrás ${age} años en la actividad`;
+    agePill.textContent = `✓ Cumples ${age} años en ${CONFIG.ELIGIBILITY_YEAR}`;
   } else {
     agePill.className = 'age-pill show warn';
-    agePill.textContent = `⚠️ Esta actividad es para edades ${CONFIG.MIN_AGE}–${CONFIG.MAX_AGE} (tendrías ${age}). Consultá con tu líder.`;
+    agePill.textContent = `⚠️ Es para jóvenes que cumplen ${CONFIG.MIN_AGE} a ${CONFIG.MAX_AGE} años en ${CONFIG.ELIGIBILITY_YEAR} (cumplirías ${age}). Consultá con tu líder.`;
   }
 });
 
@@ -641,7 +629,6 @@ function collect(){
     programa: form.querySelector('input[name="programa"]:checked')?.value || '',
     barrio: g('barrio'),
     estaca: g('estaca'),
-    talla: g('talla'),
     encargado: g('encargado'),
     telEncargado: g('telEncargado'),
     correo: g('correo'),
@@ -666,9 +653,8 @@ function buildWhatsApp(d){
 14 de julio · Quintas Los Cedros
 
 👤 *${d.nombre}* (${d.programa})
-🎂 Nace: ${d.nacimiento} (${d.edad} años)
+🎂 Nace: ${d.nacimiento} (cumple ${d.edad} en ${CONFIG.ELIGIBILITY_YEAR})
 ⛪ Barrio/Rama: ${d.barrio}${d.estaca ? ' · '+d.estaca : ''}
-👕 Talla: ${d.talla || '—'}
 
 👨‍👩‍👧 Encargado: ${d.encargado}
 📞 Tel: ${d.telEncargado}${d.correo ? '\n✉️ '+d.correo : ''}
@@ -687,7 +673,7 @@ function showSuccess(d){
   document.getElementById('recap').innerHTML = `
     <div><span>Participante</span><b>${d.nombre}</b></div>
     <div><span>Programa</span><b>${d.programa}</b></div>
-    <div><span>Edad</span><b>${d.edad} años</b></div>
+    <div><span>Edad en ${CONFIG.ELIGIBILITY_YEAR}</span><b>${d.edad} años</b></div>
     <div><span>Barrio/Rama</span><b>${d.barrio}</b></div>`;
   document.getElementById('waConfirm').href = buildWhatsApp(d);
   form.style.display = 'none';
