@@ -426,17 +426,10 @@
         <div class="err-msg">Elegí una opción.</div>
       </div>
 
-      <div class="grid-2">
-        <div class="field">
-          <label for="barrio">Barrio o Rama <span class="req">*</span></label>
-          <input type="text" id="barrio" name="barrio" placeholder="Ej: Barrio Guápiles" required>
-          <div class="err-msg">Indicá tu barrio o rama.</div>
-        </div>
-        <div class="field">
-          <label for="estaca">Estaca o Distrito <span class="req">*</span></label>
-          <input type="text" id="estaca" name="estaca" placeholder="Ej: Estaca Guápiles" required>
-          <div class="err-msg">Indicá tu estaca o distrito.</div>
-        </div>
+      <div class="field">
+        <label for="barrio">Barrio o Rama <span class="req">*</span></label>
+        <input type="text" id="barrio" name="barrio" placeholder="Ej: Barrio Guápiles" required>
+        <div class="err-msg">Indicá tu barrio o rama.</div>
       </div>
     </div>
 
@@ -705,7 +698,7 @@ function collect(){
     edad: age ?? '',
     programa: form.querySelector('input[name="programa"]:checked')?.value || '',
     barrio: g('barrio'),
-    estaca: g('estaca'),
+    estaca: '',   // campo eliminado del formulario; se envía vacío para no mover columnas del Sheet
     encargado: g('encargado'),
     telEncargado: g('telEncargado'),
     correo: g('correo'),
